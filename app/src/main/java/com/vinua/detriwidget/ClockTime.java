@@ -78,6 +78,6 @@ public class ClockTime {
     }
 
     public long nextTick() {
-        return (10 - ((100 - b) % 10)) * 864; // In milliseconds
+        return (10 - (b % 10)) * 8640; // In milliseconds
     }
 }

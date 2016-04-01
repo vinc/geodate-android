@@ -19,9 +19,7 @@ public class ClockTickReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("Detri", "RUN onReceive()");
         long nextTick = updateClockWidget(context);
-        Log.d("Detri", String.format("next tick in %d", nextTick));
 
         Intent alarmIntent = new Intent(context, ClockTickReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);

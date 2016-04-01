@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 /**
  * Implementation of App Widget functionality.
@@ -16,7 +15,6 @@ public class ClockWidget extends AppWidgetProvider {
     private static double longitude;
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-        Log.d("Detri", "RUN updateAppWidget()");
         Intent alarmIntent = new Intent(context, ClockTickReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
