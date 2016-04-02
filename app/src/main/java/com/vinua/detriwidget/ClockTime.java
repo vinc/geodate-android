@@ -25,7 +25,7 @@ public class ClockTime {
         c = e / 100;
         b = e % 100;
 
-        clockFormat = ClockFormat.CCBB;
+        clockFormat = ClockFormat.CC;
     }
 
     ;
