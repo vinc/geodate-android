@@ -8,6 +8,7 @@ public class ClockTime {
     private static double J2000 = 2451545.0009;
     long c;
     long b;
+    ClockFormat clockFormat;
 
     public ClockTime(long timestamp, double longitude) {
         double lon = longitude;
@@ -23,7 +24,11 @@ public class ClockTime {
         long e = (10000 * (now - mid)) / (getMidnight(tom, lon) - mid);
         c = e / 100;
         b = e % 100;
+
+        clockFormat = ClockFormat.CCBB;
     }
+
+    ;
 
     private static double sinDeg(double num) {
         return Math.sin(num * Math.PI / 180.0);
@@ -74,10 +79,24 @@ public class ClockTime {
     }
 
     public String toString() {
-        return String.format("%02d:%02d %d", c, b, nextTick());
+        switch (clockFormat) {
+            case CC:
+                return String.format("%02d", c);
+            case CCBB:
+            default:
+                return String.format("%02d:%02d", c, b);
+        }
     }
 
     public long nextTick() {
-        return (10 - (b % 10)) * 8640; // In milliseconds
+        switch (clockFormat) {
+            case CC:
+                return (100 - b) * 8640; // In milliseconds
+            case CCBB:
+            default:
+                return (10 - (b % 10)) * 8640; // In milliseconds
+        }
     }
+
+    private enum ClockFormat {CC, CCBB}
 }
