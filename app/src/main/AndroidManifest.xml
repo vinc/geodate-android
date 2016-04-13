@@ -23,7 +23,9 @@
             android:name=".ClockTickReceiver"
             android:process=":remote" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
