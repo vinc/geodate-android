@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.RemoteViews;
 
 /**
  * Implementation of App Widget functionality.
@@ -16,39 +17,16 @@ public class ClockWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         Intent alarmIntent = new Intent(context, ClockTickReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis(), pendingIntent);
+        alarmManager.set(AlarmManager.RTC, System.currentTimeMillis(), pendingAlarmIntent);
 
-        /*
-        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-
-        String locationProvider = LocationManager.GPS_PROVIDER;
-
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            Log.d("Detri", "No permission to read location");
-            //return;
-        }
-
-        Location location = locationManager.getLastKnownLocation(locationProvider);
-        longitude = location.getLongitude();
-        Log.d("Detri", String.format("Got longitude '%f'", longitude));
-
-        String text = ClockTime.getTime(System.currentTimeMillis() / 1000, longitude);
+        Intent mainActivityIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingMainActivityIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.clock_widget);
-        views.setTextViewText(R.id.appwidget_text, text);
-
-        // Instruct the widget manager to update the widget
+        views.setOnClickPendingIntent(R.id.appwidget_text, pendingMainActivityIntent);
         appWidgetManager.updateAppWidget(appWidgetId, views);
-        */
     }
 
     @Override
