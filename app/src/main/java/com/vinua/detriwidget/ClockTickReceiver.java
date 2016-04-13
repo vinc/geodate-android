@@ -19,6 +19,8 @@ public class ClockTickReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("Detri", "Received broadcast");
+
         long nextTick = updateClockWidget(context);
 
         Intent alarmIntent = new Intent(context, ClockTickReceiver.class);
@@ -27,7 +29,7 @@ public class ClockTickReceiver extends BroadcastReceiver {
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + nextTick, pendingIntent);
     }
 
-    private long updateClockWidget(Context context) {
+    private double getLongitude(Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         String locationProvider = LocationManager.GPS_PROVIDER;
@@ -48,11 +50,19 @@ public class ClockTickReceiver extends BroadcastReceiver {
         double longitude = location.getLongitude();
         Log.d("Detri", String.format("Got longitude '%f'", longitude));
 
-        ClockTime clockTime = new ClockTime(System.currentTimeMillis() / 1000, longitude);
+        return longitude;
+    }
+
+    private long updateClockWidget(Context context) {
+        double longitude = getLongitude(context);
+
+        ClockTime clockTime = new ClockTime(System.currentTimeMillis() / 1000, longitude, false);
         String text = clockTime.toString();
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.clock_widget);
         views.setTextViewText(R.id.appwidget_text, text);
+
+        Log.d("Detri", "Updating the widget: " + text);
 
         // Instruct the widget manager to update the widget
         ComponentName clockWidget = new ComponentName(context, ClockWidget.class);

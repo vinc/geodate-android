@@ -3,13 +3,14 @@
     package="com.vinua.detriwidget">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <receiver android:name="com.vinua.detriwidget.ClockWidget">
+        <receiver android:name=".ClockWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -19,8 +20,16 @@
                 android:resource="@xml/clock_widget_info" />
         </receiver>
         <receiver
-            android:name="com.vinua.detriwidget.ClockTickReceiver"
+            android:name=".ClockTickReceiver"
             android:process=":remote" />
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

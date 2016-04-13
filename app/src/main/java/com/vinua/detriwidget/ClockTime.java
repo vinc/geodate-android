@@ -10,7 +10,7 @@ public class ClockTime {
     long b;
     ClockFormat clockFormat;
 
-    public ClockTime(long timestamp, double longitude) {
+    public ClockTime(long timestamp, double longitude, boolean useLongFormat) {
         double lon = longitude;
         long now = timestamp;
         long tom = now + 86400;
@@ -25,10 +25,8 @@ public class ClockTime {
         c = e / 100;
         b = e % 100;
 
-        clockFormat = ClockFormat.CC;
+        clockFormat = useLongFormat ? ClockFormat.CCBB : ClockFormat.CC;
     }
-
-    ;
 
     private static double sinDeg(double num) {
         return Math.sin(num * Math.PI / 180.0);
@@ -94,7 +92,8 @@ public class ClockTime {
                 return (100 - b) * 8640; // In milliseconds
             case CCBB:
             default:
-                return (10 - (b % 10)) * 8640; // In milliseconds
+                //return (10 - (b % 10)) * 8640; // In milliseconds
+                return 8640; // In milliseconds
         }
     }
 
