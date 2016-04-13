@@ -31,7 +31,7 @@ public class ClockLocation {
         Location location = locationManager.getLastKnownLocation(locationProvider);
 
         longitude = location.getLongitude();
-        Log.d("Detri", String.format("Got longitude '%f'", longitude));
+        //Log.d("Detri", String.format("Got longitude '%f'", longitude));
     }
 
     public double getLongitude() {

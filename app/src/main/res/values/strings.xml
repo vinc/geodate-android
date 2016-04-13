@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DetriWidget</string>
+    <string name="app_name">Detri Clock</string>
     <string name="appwidget_text">00</string>
     <string name="add_widget">Add widget</string>
 </resources>
