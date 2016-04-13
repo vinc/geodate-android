@@ -7,14 +7,13 @@ import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.RemoteViews;
 
 public class ClockTickReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d("Detri", "Received broadcast");
+        //Log.d("Detri", "Received broadcast");
 
         long nextTick = updateClockWidget(context);
 
@@ -33,7 +32,7 @@ public class ClockTickReceiver extends BroadcastReceiver {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.clock_widget);
         views.setTextViewText(R.id.appwidget_text, text);
 
-        Log.d("Detri", "Updating the widget: " + text);
+        //Log.d("Detri", "Updating the widget: " + text);
 
         // Instruct the widget manager to update the widget
         ComponentName clockWidget = new ComponentName(context, ClockWidget.class);
