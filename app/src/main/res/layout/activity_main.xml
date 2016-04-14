@@ -15,8 +15,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:fontFamily="sans-serif-light"
         android:text="00:00:00:00:00"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#666666"
-        android:textSize="32sp" />
+        android:textColor="@color/colorText"
+        android:textSize="48sp" />
 </RelativeLayout>

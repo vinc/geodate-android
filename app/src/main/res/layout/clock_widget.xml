@@ -13,9 +13,10 @@
         android:layout_margin="8dp"
         android:background="@null"
         android:contentDescription="@string/appwidget_text"
+        android:fontFamily="sans-serif-light"
         android:text="@string/appwidget_text"
         android:textColor="#ffffff"
-        android:textSize="26sp"
+        android:textSize="48sp"
         android:textStyle="" />
 
 </RelativeLayout>
