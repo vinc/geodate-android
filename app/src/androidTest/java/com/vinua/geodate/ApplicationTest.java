@@ -1,4 +1,4 @@
-package com.vinua.detriwidget;
+package com.vinua.geodate;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

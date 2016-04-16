@@ -1,4 +1,4 @@
-package com.vinua.detriwidget;
+package com.vinua.geodate;
 
 import android.Manifest;
 import android.content.Context;
@@ -8,10 +8,10 @@ import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-public class ClockLocation {
+public class GeoLocation {
     private double longitude;
 
-    public ClockLocation(Context context) {
+    public GeoLocation(Context context) {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         String locationProvider = LocationManager.GPS_PROVIDER;

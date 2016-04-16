@@ -1,4 +1,4 @@
-package com.vinua.detriwidget;
+package com.vinua.geodate;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -9,36 +9,37 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 
-public class ClockTickReceiver extends BroadcastReceiver {
+public class GeoDateWidgetTickReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
         //Log.d("Detri", "Received broadcast");
 
-        long nextTick = updateClockWidget(context);
+        // TODO: Add method GeoDateWidget.getNextTick()
+        long nextTick = updateGeoDateWidget(context);
 
-        Intent alarmIntent = new Intent(context, ClockTickReceiver.class);
+        Intent alarmIntent = new Intent(context, GeoDateWidgetTickReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis() + nextTick, pendingIntent);
     }
 
-    private long updateClockWidget(Context context) {
-        double longitude = new ClockLocation(context).getLongitude();
+    private long updateGeoDateWidget(Context context) {
+        double longitude = new GeoLocation(context).getLongitude();
 
-        ClockTime clockTime = new ClockTime(System.currentTimeMillis() / 1000, longitude, false);
-        String text = clockTime.toString();
+        GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, false);
+        String text = geoDate.toString();
 
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.clock_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_geodate);
         views.setTextViewText(R.id.appwidget_text, text);
 
         //Log.d("Detri", "Updating the widget: " + text);
 
         // Instruct the widget manager to update the widget
-        ComponentName clockWidget = new ComponentName(context, ClockWidget.class);
+        ComponentName geoDateWidget = new ComponentName(context, GeoDateWidget.class);
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        appWidgetManager.updateAppWidget(clockWidget, views);
+        appWidgetManager.updateAppWidget(geoDateWidget, views);
 
-        return clockTime.nextTick();
+        return geoDate.nextTick();
     }
 }

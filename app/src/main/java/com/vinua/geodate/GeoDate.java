@@ -1,18 +1,17 @@
-package com.vinua.detriwidget;
+package com.vinua.geodate;
 
-/**
- * Created by v on 4/1/16.
- */
-public class ClockTime {
-
+public class GeoDate {
     private static double J2000 = 2451545.0009;
+    private enum ClockFormat { CC, CCBB, YYMMDDCCBB }
+
+    ClockFormat clockFormat;
     long y;
     long m;
     long d;
     long c;
     long b;
-    ClockFormat clockFormat;
-    public ClockTime(long timestamp, double longitude, boolean useLongFormat) {
+
+    public GeoDate(long timestamp, double longitude, boolean useLongFormat) {
         clockFormat = useLongFormat ? ClockFormat.YYMMDDCCBB : ClockFormat.CC;
 
         double lon = longitude;
@@ -83,6 +82,30 @@ public class ClockTime {
         long e = (10000 * (now - mid)) / (getMidnight(tom, lon) - mid);
         c = e / 100;
         b = e % 100;
+    }
+
+    @Override
+    public String toString() {
+        switch (clockFormat) {
+            case CC:
+                return String.format("%02d", c);
+            case CCBB:
+                return String.format("%02d:%02d", c, b);
+            case YYMMDDCCBB:
+            default:
+                return String.format("%02d:%02d:%02d:%02d:%02d", y, m, d, c, b);
+        }
+    }
+
+    public long nextTick() {
+        switch (clockFormat) {
+            case CC:
+                return (100 - b) * 8640; // In milliseconds
+            case CCBB:
+            default:
+                //return (10 - (b % 10)) * 8640; // In milliseconds
+                return 8640; // In milliseconds
+        }
     }
 
     private static double sinDeg(double num) {
@@ -214,13 +237,13 @@ public class ClockTime {
         return julianToUnix(jdme + (0.00001 * s) / l);
     }
 
-    static private double cosDeg(double num) {
+    private static double cosDeg(double num) {
         return Math.cos(num * Math.PI / 180.0);
     }
 
     // From "Astronomical Algorithms"
     // By Jean Meeus
-    static private long getMoonPhase(int phase, double lunationNumber) {
+    private static long getMoonPhase(int phase, double lunationNumber) {
         double k = lunationNumber;
         double t = k / 1236.85;
 
@@ -452,36 +475,11 @@ public class ClockTime {
         }
     }
 
-    static private long getNewMoon(double lunationNumber) {
+    private static long getNewMoon(double lunationNumber) {
         return getMoonPhase(0, lunationNumber);
     }
 
-    static private long getDecemberSolstice(long timestamp) {
+    private static long getDecemberSolstice(long timestamp) {
         return getSunEphemeris(3, timestamp);
     }
-
-    public String toString() {
-        switch (clockFormat) {
-            case CC:
-                return String.format("%02d", c);
-            case CCBB:
-                return String.format("%02d:%02d", c, b);
-            case YYMMDDCCBB:
-            default:
-                return String.format("%02d:%02d:%02d:%02d:%02d", y, m, d, c, b);
-        }
-    }
-
-    public long nextTick() {
-        switch (clockFormat) {
-            case CC:
-                return (100 - b) * 8640; // In milliseconds
-            case CCBB:
-            default:
-                //return (10 - (b % 10)) * 8640; // In milliseconds
-                return 8640; // In milliseconds
-        }
-    }
-
-    private enum ClockFormat {CC, CCBB, YYMMDDCCBB}
 }

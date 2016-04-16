@@ -1,4 +1,4 @@
-package com.vinua.detriwidget;
+package com.vinua.geodate;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -11,13 +11,10 @@ import android.widget.RemoteViews;
 /**
  * Implementation of App Widget functionality.
  */
-public class ClockWidget extends AppWidgetProvider {
-
-    private static double longitude;
-
+public class GeoDateWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         // Start updating the clock
-        Intent alarmIntent = new Intent(context, ClockTickReceiver.class);
+        Intent alarmIntent = new Intent(context, GeoDateWidgetTickReceiver.class);
         PendingIntent pendingAlarmIntent = PendingIntent.getBroadcast(context, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, System.currentTimeMillis(), pendingAlarmIntent);
@@ -25,7 +22,7 @@ public class ClockWidget extends AppWidgetProvider {
         // Show main activity on click
         Intent mainActivityIntent = new Intent(context, MainActivity.class);
         PendingIntent pendingMainActivityIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0);
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.clock_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_geodate);
         views.setOnClickPendingIntent(R.id.appwidget_text, pendingMainActivityIntent);
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }

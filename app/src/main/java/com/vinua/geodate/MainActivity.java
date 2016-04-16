@@ -1,4 +1,4 @@
-package com.vinua.detriwidget;
+package com.vinua.geodate;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             Context context = getApplicationContext();
-            double longitude = new ClockLocation(context).getLongitude();
-            ClockTime clockTime = new ClockTime(System.currentTimeMillis() / 1000, longitude, true);
-            SpannableString text = new SpannableString(clockTime.toString());
+            double longitude = new GeoLocation(context).getLongitude();
+            GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, true);
+            SpannableString text = new SpannableString(geoDate.toString());
             int color = ContextCompat.getColor(context, R.color.colorPrimaryText);
             text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
             text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
