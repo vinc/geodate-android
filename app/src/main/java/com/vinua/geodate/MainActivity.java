@@ -19,8 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView clockText;
     private DecoView clockArc;
     private int clockArcIndex;
-    private long lastClockArcUpdate;
-
+    private GeoDate lastGeoDate;
 
     private final Runnable textRunnable = new Runnable() {
         @Override
@@ -30,18 +29,17 @@ public class MainActivity extends AppCompatActivity {
             long timestamp = System.currentTimeMillis() / 1000;
             GeoDate geoDate = new GeoDate(timestamp, longitude, true);
 
-            SpannableString text = new SpannableString(geoDate.toString());
-            int color = ContextCompat.getColor(context, R.color.colorPrimaryText);
-            text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
-            text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
-            text.setSpan(new ForegroundColorSpan(color), 6, 8, 0);
-            text.setSpan(new ForegroundColorSpan(color), 9, 11, 0);
-            text.setSpan(new ForegroundColorSpan(color), 12, 14, 0);
-            clockText.setText(text, TextView.BufferType.SPANNABLE);
+            if (!geoDate.equals(lastGeoDate)) {
+                lastGeoDate = geoDate;
 
-            // No need to update the clockArc too often
-            if (timestamp - lastClockArcUpdate > 5) {
-                lastClockArcUpdate = timestamp;
+                SpannableString text = new SpannableString(geoDate.toString());
+                int color = ContextCompat.getColor(context, R.color.colorPrimaryText);
+                text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
+                text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
+                text.setSpan(new ForegroundColorSpan(color), 6, 8, 0);
+                text.setSpan(new ForegroundColorSpan(color), 9, 11, 0);
+                text.setSpan(new ForegroundColorSpan(color), 12, 14, 0);
+                clockText.setText(text, TextView.BufferType.SPANNABLE);
 
                 clockArc.addEvent(new DecoEvent.Builder(geoDate.getCentidays())
                         .setIndex(clockArcIndex)
@@ -60,7 +58,6 @@ public class MainActivity extends AppCompatActivity {
         clockText = (TextView) findViewById(R.id.textView);
         clockArc = (DecoView) findViewById(R.id.dynamicArcView);
 
-        lastClockArcUpdate = 0;
         clockArc.configureAngles(360, 180);
 
         // Create background track

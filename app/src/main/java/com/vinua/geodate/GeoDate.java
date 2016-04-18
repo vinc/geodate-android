@@ -1,10 +1,55 @@
 package com.vinua.geodate;
 
+import java.util.Objects;
+
 public class GeoDate {
     private static double J2000 = 2451545.0009;
 
+    @Override
+    public int hashCode() {
+        long result = 17;
+        result = 31 * result + this.y;
+        result = 31 * result + this.m;
+        result = 31 * result + this.d;
+        result = 31 * result + this.c;
+        result = 31 * result + this.b;
+
+        return (int) result; //FIXME: Change long to int
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof GeoDate)) {
+            return false;
+        }
+
+        GeoDate other = (GeoDate) o;
+
+        return other.getYears() == this.getYears()
+                && other.getMonths() == this.getMonths()
+                && other.getDays() == this.getDays()
+                && other.getCentidays() == this.getCentidays()
+                && other.getDimidays() == this.getDimidays();
+    }
+
+    public long getYears() {
+        return y;
+    }
+
+    public long getMonths() {
+        return y;
+    }
+
+    public long getDays() {
+        return d;
+    }
+
     public long getCentidays() {
         return c;
+    }
+
+    public long getDimidays() {
+        return b;
     }
 
     private enum ClockFormat { CC, CCBB, YYMMDDCCBB }
