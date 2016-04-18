@@ -67,12 +67,12 @@ public class MainActivity extends AppCompatActivity {
                 .build());
 
         //Create data series track
-        SeriesItem seriesItem1 = new SeriesItem.Builder(R.color.colorArcForeground)
+        SeriesItem elapsedTime = new SeriesItem.Builder(R.color.colorArcForeground)
                 .setRange(0, 100, 0)
                 .setLineWidth(32f)
                 .build();
 
-        clockArcIndex = clockArc.addSeries(seriesItem1);
+        clockArcIndex = clockArc.addSeries(elapsedTime);
 
         handler.postDelayed(textRunnable, 0);
     }
