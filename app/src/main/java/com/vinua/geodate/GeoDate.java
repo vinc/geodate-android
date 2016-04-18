@@ -2,6 +2,11 @@ package com.vinua.geodate;
 
 public class GeoDate {
     private static double J2000 = 2451545.0009;
+
+    public long getCentidays() {
+        return c;
+    }
+
     private enum ClockFormat { CC, CCBB, YYMMDDCCBB }
 
     ClockFormat clockFormat;
