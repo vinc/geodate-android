@@ -24,5 +24,8 @@
         android:text="00:00:00:00:00"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/colorText"
-        android:textSize="42sp" />
+        android:textSize="42sp"
+        android:clickable="true"
+        android:onClick="changeClockFormat"
+        />
 </RelativeLayout>

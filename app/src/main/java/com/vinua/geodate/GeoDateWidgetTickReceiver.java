@@ -27,8 +27,8 @@ public class GeoDateWidgetTickReceiver extends BroadcastReceiver {
     private long updateGeoDateWidget(Context context) {
         double longitude = new GeoLocation(context).getLongitude();
 
-        GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, false);
-        String text = geoDate.toString();
+        GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, true);
+        String text = geoDate.toString(GeoDate.ClockFormat.CC);
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_geodate);
         views.setTextViewText(R.id.appwidget_text, text);

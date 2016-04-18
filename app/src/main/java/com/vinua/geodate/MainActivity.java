@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.TextView;
 
 import com.hookedonplay.decoviewlib.DecoView;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private DecoView clockArc;
     private int clockArcIndex;
     private GeoDate lastGeoDate;
+    private GeoDate.ClockFormat clockFormat;
 
     private final Runnable textRunnable = new Runnable() {
         @Override
@@ -27,18 +29,24 @@ public class MainActivity extends AppCompatActivity {
             Context context = getApplicationContext();
             double longitude = new GeoLocation(context).getLongitude();
             long timestamp = System.currentTimeMillis() / 1000;
-            GeoDate geoDate = new GeoDate(timestamp, longitude, true);
+            GeoDate geoDate = new GeoDate(timestamp, longitude, false);
 
             if (!geoDate.equals(lastGeoDate)) {
                 lastGeoDate = geoDate;
 
-                SpannableString text = new SpannableString(geoDate.toString());
                 int color = ContextCompat.getColor(context, R.color.colorPrimaryText);
-                text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
-                text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
-                text.setSpan(new ForegroundColorSpan(color), 6, 8, 0);
-                text.setSpan(new ForegroundColorSpan(color), 9, 11, 0);
-                text.setSpan(new ForegroundColorSpan(color), 12, 14, 0);
+                SpannableString text = new SpannableString(geoDate.toString(clockFormat));
+                switch (clockFormat) {
+                    case YYMMDDCCBB:
+                        text.setSpan(new ForegroundColorSpan(color), 12, 14, 0);
+                        text.setSpan(new ForegroundColorSpan(color), 9, 11, 0);
+                        text.setSpan(new ForegroundColorSpan(color), 6, 8, 0);
+                    case CCBB:
+                        text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
+                    case CC:
+                        text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
+                        break;
+                }
                 clockText.setText(text, TextView.BufferType.SPANNABLE);
 
                 clockArc.addEvent(new DecoEvent.Builder(geoDate.getCentidays())
@@ -58,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
         clockText = (TextView) findViewById(R.id.textView);
         clockArc = (DecoView) findViewById(R.id.dynamicArcView);
 
+        clockFormat = GeoDate.ClockFormat.YYMMDDCCBB;
+
         clockArc.configureAngles(360, 180);
 
         // Create background track
@@ -74,6 +84,23 @@ public class MainActivity extends AppCompatActivity {
 
         clockArcIndex = clockArc.addSeries(elapsedTime);
 
-        handler.postDelayed(textRunnable, 0);
+        handler.post(textRunnable);
+    }
+
+    public void changeClockFormat(View view) {
+        switch (clockFormat) {
+            case YYMMDDCCBB:
+                clockFormat = GeoDate.ClockFormat.CCBB;
+                break;
+            case CCBB:
+                clockFormat = GeoDate.ClockFormat.CC;
+                break;
+            case CC:
+                clockFormat = GeoDate.ClockFormat.YYMMDDCCBB;
+                break;
+        }
+        lastGeoDate = null;
+        handler.removeCallbacks(textRunnable);
+        handler.post(textRunnable);
     }
 }

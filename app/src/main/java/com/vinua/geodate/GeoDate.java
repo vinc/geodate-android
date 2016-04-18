@@ -1,7 +1,5 @@
 package com.vinua.geodate;
 
-import java.util.Objects;
-
 public class GeoDate {
     private static double J2000 = 2451545.0009;
 
@@ -52,17 +50,17 @@ public class GeoDate {
         return b;
     }
 
-    private enum ClockFormat { CC, CCBB, YYMMDDCCBB }
+    public enum ClockFormat { CC, CCBB, YYMMDDCCBB }
 
-    ClockFormat clockFormat;
+    boolean isShortDate;
     long y;
     long m;
     long d;
     long c;
     long b;
 
-    public GeoDate(long timestamp, double longitude, boolean useLongFormat) {
-        clockFormat = useLongFormat ? ClockFormat.YYMMDDCCBB : ClockFormat.CC;
+    public GeoDate(long timestamp, double longitude, boolean computeOnlyShortDate) {
+        isShortDate = computeOnlyShortDate;
 
         double lon = longitude;
         long now = timestamp;
@@ -99,7 +97,7 @@ public class GeoDate {
         m = 0;
         y = 0;
 
-        if (clockFormat == ClockFormat.YYMMDDCCBB) {
+        if (!computeOnlyShortDate) {
             long t = getMidnight(0, lon);
 
             if (t < 0) {
@@ -136,6 +134,10 @@ public class GeoDate {
 
     @Override
     public String toString() {
+        return this.toString(ClockFormat.YYMMDDCCBB);
+    }
+
+    public String toString(ClockFormat clockFormat) {
         switch (clockFormat) {
             case CC:
                 return String.format("%02d", c);
@@ -147,15 +149,11 @@ public class GeoDate {
         }
     }
 
+    // Returns result in milliseconds
     public long nextTick() {
-        switch (clockFormat) {
-            case CC:
-                return (100 - b) * 8640; // In milliseconds
-            case CCBB:
-            default:
-                //return (10 - (b % 10)) * 8640; // In milliseconds
-                return 8640; // In milliseconds
-        }
+        long oneDimiday = 8640; // TODO: Compute real value
+
+        return oneDimiday * (isShortDate ? (100 - b) : 1);
     }
 
     private static double sinDeg(double num) {
