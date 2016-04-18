@@ -61,13 +61,13 @@ public class MainActivity extends AppCompatActivity {
         clockArc.configureAngles(360, 180);
 
         // Create background track
-        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#DDDDDD"))
+        clockArc.addSeries(new SeriesItem.Builder(R.color.colorArcBackground)
                 .setRange(0, 100, 100)
                 .setLineWidth(32f)
                 .build());
 
         //Create data series track
-        SeriesItem seriesItem1 = new SeriesItem.Builder(Color.parseColor("#AADDDD"))
+        SeriesItem seriesItem1 = new SeriesItem.Builder(R.color.colorArcForeground)
                 .setRange(0, 100, 0)
                 .setLineWidth(32f)
                 .build();
