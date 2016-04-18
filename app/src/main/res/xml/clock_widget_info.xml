@@ -3,8 +3,8 @@
     android:initialKeyguardLayout="@layout/widget_geodate"
     android:initialLayout="@layout/widget_geodate"
     android:minHeight="40dp"
-    android:minWidth="40dp"
-    android:previewImage="@drawable/example_appwidget_preview"
+    android:minWidth="80dp"
+    android:previewImage="@drawable/widget_geodate_preview"
     android:resizeMode="horizontal|vertical"
     android:updatePeriodMillis="0"
     android:widgetCategory="home_screen"></appwidget-provider>
