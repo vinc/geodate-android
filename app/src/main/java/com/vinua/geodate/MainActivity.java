@@ -1,6 +1,7 @@
 package com.vinua.geodate;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private int clockArcIndex;
     private GeoDate lastGeoDate;
     private GeoDate.ClockFormat clockFormat;
+    SharedPreferences settings;
 
     private final Runnable textRunnable = new Runnable() {
         @Override
@@ -69,6 +71,28 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    private void saveClockFormat() {
+        int code;
+        switch (clockFormat) {
+            case CC:         code = 2; break;
+            case CCBB:       code = 1; break;
+            case YYMMDDCCBB: code = 0; break;
+            default:         code = 0; break;
+        }
+        settings.edit().putInt("clockFormat", code).apply();
+    }
+
+    private void restoreClockFormat() {
+        settings = getPreferences(MODE_PRIVATE);
+        switch (settings.getInt("clockFormat", 0)) {
+            case 2:  clockFormat = GeoDate.ClockFormat.CC; break;
+            case 1:  clockFormat = GeoDate.ClockFormat.CCBB; break;
+            case 0:  clockFormat = GeoDate.ClockFormat.YYMMDDCCBB; break;
+            default: clockFormat = GeoDate.ClockFormat.YYMMDDCCBB; break;
+        }
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
         clockText = (TextView) findViewById(R.id.textView);
         clockArc = (DecoView) findViewById(R.id.dynamicArcView);
 
-        clockFormat = GeoDate.ClockFormat.YYMMDDCCBB;
-
+        restoreClockFormat();
         clockArc.configureAngles(360, 180);
 
         // Create background track
@@ -110,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 clockFormat = GeoDate.ClockFormat.YYMMDDCCBB;
                 break;
         }
+        saveClockFormat();
         lastGeoDate = null;
         handler.removeCallbacks(textRunnable);
         handler.post(textRunnable);
