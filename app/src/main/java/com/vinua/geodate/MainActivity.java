@@ -71,13 +71,13 @@ public class MainActivity extends AppCompatActivity {
         clockArc.configureAngles(360, 180);
 
         // Create background track
-        clockArc.addSeries(new SeriesItem.Builder(R.color.colorArcBackground)
+        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#E0E0E0")) // FIXME: Use colors.xml
                 .setRange(0, 100, 100)
                 .setLineWidth(32f)
                 .build());
 
         //Create data series track
-        SeriesItem elapsedTime = new SeriesItem.Builder(R.color.colorArcForeground)
+        SeriesItem elapsedTime = new SeriesItem.Builder(Color.parseColor("#B2DFDB"))
                 .setRange(0, 100, 0)
                 .setLineWidth(32f)
                 .build();

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#BBB</color>
-    <color name="colorPrimaryDark">#AAA</color>
-    <color name="colorAccent">#FF4081</color>
-    <color name="colorPrimaryText">#666</color>
-    <color name="colorText">#BBB</color>
-    <color name="colorArcBackground">#DDD</color>
-    <color name="colorArcForeground">#ADD</color>
+    <color name="colorPrimary">#B2DFDB</color>
+    <color name="colorPrimaryDark">#00897B</color>
+    <color name="colorPrimaryText">#616161</color>
+    <color name="colorText">#BDBDBD</color>
+    <color name="colorArcBackground">#E0E0E0</color>
+    <color name="colorArcForeground">#B2DFDB</color>
 </resources>
