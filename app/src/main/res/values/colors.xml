@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#B2DFDB</color>
-    <color name="colorPrimaryDark">#BDBDBD</color>
+    <color name="colorPrimary">#4DB6AC</color>
+    <color name="colorPrimaryDark">#4DB6AC</color>
     <color name="colorPrimaryText">#616161</color>
     <color name="colorText">#BDBDBD</color>
     <color name="colorArcBackground">#E0E0E0</color>
-    <color name="colorArcForeground">#B2DFDB</color>
+    <color name="colorArcForeground">#4DB6AC</color>
 </resources>

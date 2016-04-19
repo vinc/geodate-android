@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.hookedonplay.decoviewlib.DecoView;
+import com.hookedonplay.decoviewlib.charts.EdgeDetail;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
@@ -82,13 +83,14 @@ public class MainActivity extends AppCompatActivity {
         // Create background track
         clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#E0E0E0")) // FIXME: Use colors.xml
                 .setRange(0, 100, 100)
-                .setLineWidth(32f)
+                .setLineWidth(40f)
                 .build());
 
         //Create data series track
-        SeriesItem elapsedTime = new SeriesItem.Builder(Color.parseColor("#B2DFDB"))
+        SeriesItem elapsedTime = new SeriesItem.Builder(Color.parseColor("#4DB6AC"))
+                .addEdgeDetail(new EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, Color.parseColor("#11000000"), 0.2f))
                 .setRange(0, 100, 0)
-                .setLineWidth(32f)
+                .setLineWidth(40f)
                 .build();
 
         clockArcIndex = clockArc.addSeries(elapsedTime);
