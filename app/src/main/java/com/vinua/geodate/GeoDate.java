@@ -128,7 +128,7 @@ public class GeoDate {
         }
 
         long e = (10000 * (now - mid)) / (getMidnight(tom, lon) - mid);
-        c = e / 100;
+        c = (e / 100) % 100;
         b = e % 100;
     }
 
