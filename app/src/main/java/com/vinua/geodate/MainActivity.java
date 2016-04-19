@@ -49,6 +49,15 @@ public class MainActivity extends AppCompatActivity {
                 }
                 clockText.setText(text, TextView.BufferType.SPANNABLE);
 
+                switch (clockFormat) {
+                    case YYMMDDCCBB:
+                        clockText.setTextSize(42);
+                        break;
+                    default:
+                        clockText.setTextSize(64);
+                        break;
+                }
+
                 clockArc.addEvent(new DecoEvent.Builder(geoDate.getCentidays())
                         .setIndex(clockArcIndex)
                         .setDuration(0)
