@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private final Runnable textRunnable = new Runnable() {
         @Override
         public void run() {
+            long start = System.currentTimeMillis();
             Context context = getApplicationContext();
             double longitude = new GeoLocation(context).getLongitude();
             long timestamp = System.currentTimeMillis() / 1000;
@@ -67,7 +69,10 @@ public class MainActivity extends AppCompatActivity {
                         .build());
             }
 
-            handler.postDelayed(textRunnable, 1000);
+            long stop = System.currentTimeMillis();
+            long elapsed = stop - start;
+            //Log.d("GeoDate", String.format("Elapsed time: %d ms", elapsed));
+            handler.postDelayed(textRunnable, 1000 - elapsed);
         }
     };
 
