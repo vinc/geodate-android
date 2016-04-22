@@ -73,11 +73,15 @@ public class MainActivity extends AppCompatActivity {
             } catch (GeoLocation.LocationNotFoundException e) {
                 clockText.setTextSize(24);
                 clockText.setText("Location not found");
+                clockArc.addEvent(new DecoEvent.Builder(0)
+                        .setIndex(clockArcIndex)
+                        .setDuration(0)
+                        .build());
             }
 
             long stop = System.currentTimeMillis();
             long elapsed = stop - start;
-            //Log.d("GeoDate", String.format("Elapsed time: %d ms", elapsed));
+            Log.d("GeoDate", String.format("Elapsed time: %d ms", elapsed));
             handler.postDelayed(textRunnable, 1000 - elapsed);
         }
     };
