@@ -25,12 +25,20 @@ public class GeoDateWidgetTickReceiver extends BroadcastReceiver {
     }
 
     private long updateGeoDateWidget(Context context) {
-        double longitude = new GeoLocation(context).getLongitude();
-
-        GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, true);
-        String text = geoDate.toString(GeoDate.ClockFormat.CC);
-
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_geodate);
+        String text;
+        long nextTick;
+        try {
+            double longitude = new GeoLocation(context).getLongitude();
+            GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, true);
+            text = geoDate.toString(GeoDate.ClockFormat.CC);
+            nextTick = geoDate.nextTick();
+        } catch (GeoLocation.LocationNotFoundException e) {
+            // Could not find location, wait before retrying
+            text = "00";
+            nextTick = 10000; // FIXME: Find how long should we wait
+        }
+
         views.setTextViewText(R.id.appwidget_text, text);
 
         //Log.d("Detri", "Updating the widget: " + text);
@@ -40,6 +48,6 @@ public class GeoDateWidgetTickReceiver extends BroadcastReceiver {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         appWidgetManager.updateAppWidget(geoDateWidget, views);
 
-        return geoDate.nextTick();
+        return nextTick;
     }
 }

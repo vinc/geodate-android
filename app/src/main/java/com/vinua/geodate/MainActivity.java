@@ -32,41 +32,47 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             long start = System.currentTimeMillis();
             Context context = getApplicationContext();
-            double longitude = new GeoLocation(context).getLongitude();
-            long timestamp = System.currentTimeMillis() / 1000;
-            GeoDate geoDate = new GeoDate(timestamp, longitude, false);
 
-            if (!geoDate.equals(lastGeoDate)) {
-                lastGeoDate = geoDate;
+            try {
+                long timestamp = System.currentTimeMillis() / 1000;
+                double longitude = new GeoLocation(context).getLongitude();
+                GeoDate geoDate = new GeoDate(timestamp, longitude, false);
 
-                int color = ContextCompat.getColor(context, R.color.colorPrimaryText);
-                SpannableString text = new SpannableString(geoDate.toString(clockFormat));
-                switch (clockFormat) {
-                    case YYMMDDCCBB:
-                        text.setSpan(new ForegroundColorSpan(color), 12, 14, 0);
-                        text.setSpan(new ForegroundColorSpan(color), 9, 11, 0);
-                        text.setSpan(new ForegroundColorSpan(color), 6, 8, 0);
-                    case CCBB:
-                        text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
-                    case CC:
-                        text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
-                        break;
+                if (!geoDate.equals(lastGeoDate)) {
+                    lastGeoDate = geoDate;
+
+                    int color = ContextCompat.getColor(context, R.color.colorPrimaryText);
+                    SpannableString text = new SpannableString(geoDate.toString(clockFormat));
+                    switch (clockFormat) {
+                        case YYMMDDCCBB:
+                            text.setSpan(new ForegroundColorSpan(color), 12, 14, 0);
+                            text.setSpan(new ForegroundColorSpan(color), 9, 11, 0);
+                            text.setSpan(new ForegroundColorSpan(color), 6, 8, 0);
+                        case CCBB:
+                            text.setSpan(new ForegroundColorSpan(color), 3, 5, 0);
+                        case CC:
+                            text.setSpan(new ForegroundColorSpan(color), 0, 2, 0);
+                            break;
+                    }
+                    clockText.setText(text, TextView.BufferType.SPANNABLE);
+
+                    switch (clockFormat) {
+                        case YYMMDDCCBB:
+                            clockText.setTextSize(42);
+                            break;
+                        default:
+                            clockText.setTextSize(64);
+                            break;
+                    }
+
+                    clockArc.addEvent(new DecoEvent.Builder(geoDate.getCentidays())
+                            .setIndex(clockArcIndex)
+                            .setDuration(0)
+                            .build());
                 }
-                clockText.setText(text, TextView.BufferType.SPANNABLE);
-
-                switch (clockFormat) {
-                    case YYMMDDCCBB:
-                        clockText.setTextSize(42);
-                        break;
-                    default:
-                        clockText.setTextSize(64);
-                        break;
-                }
-
-                clockArc.addEvent(new DecoEvent.Builder(geoDate.getCentidays())
-                        .setIndex(clockArcIndex)
-                        .setDuration(0)
-                        .build());
+            } catch (GeoLocation.LocationNotFoundException e) {
+                clockText.setTextSize(24);
+                clockText.setText("Location not found");
             }
 
             long stop = System.currentTimeMillis();

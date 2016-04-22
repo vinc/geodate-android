@@ -9,9 +9,11 @@ import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
 public class GeoLocation {
+    public class LocationNotFoundException extends Exception { }
+
     private double longitude;
 
-    public GeoLocation(Context context) {
+    public GeoLocation(Context context) throws LocationNotFoundException {
         LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
         String locationProvider = LocationManager.GPS_PROVIDER;
@@ -30,10 +32,15 @@ public class GeoLocation {
 
         Location location = locationManager.getLastKnownLocation(locationProvider);
 
+        if (location == null) {
+            throw new LocationNotFoundException();
+        }
         longitude = location.getLongitude();
+
         //Log.d("Detri", String.format("Got longitude '%f'", longitude));
     }
 
+    // NOTE: Can return null
     public double getLongitude() {
         return longitude;
     }
