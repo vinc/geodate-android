@@ -79,12 +79,11 @@ public class MainActivity extends AppCompatActivity {
                             .setDuration(0)
                             .build());
 
-                    // TODO: Implement this
-                    // long timestamp_midnight = geoDate.getTimeOfMidnight();
-                    // long timestamp_sunrise = geoDate.getTimeOfSunrise();
-                    // long timestamp_sunset = geoDate.getTimeOfSunrise();
-                    float sunrise = 28.47f; // (timestamp_sunrise - timestamp_midnight) * 100.00f / 86400.00f;
-                    float sunset = 71.49f; // (timestamp_sunset - timestamp_midnight) * 100.00f / 86400.00f;
+                    long timestamp_midnight = geoDate.getTimeOfMidnight();
+                    long timestamp_sunrise = geoDate.getTimeOfSunrise();
+                    long timestamp_sunset = geoDate.getTimeOfSunset();
+                    float sunrise = (timestamp_sunrise - timestamp_midnight) * 100.00f / 86400.00f;
+                    float sunset = (timestamp_sunset - timestamp_midnight) * 100.00f / 86400.00f;
 
                     clockArc.addEvent(new DecoEvent.Builder(sunrise)
                             .setIndex(clockArcSunriseIndex)

@@ -3,6 +3,18 @@ package com.vinua.geodate;
 public class GeoDate {
     private static double J2000 = 2451545.0009;
 
+    public enum ClockFormat { CC, CCBB, YYMMDDCCBB }
+
+    private boolean isShortDate;
+    private long y;
+    private long m;
+    private long d;
+    private long c;
+    private long b;
+    private long timeOfMidnight;
+    private long timeOfSunrise;
+    private long timeOfSunset;
+
     @Override
     public int hashCode() {
         long result = 17;
@@ -50,14 +62,17 @@ public class GeoDate {
         return b;
     }
 
-    public enum ClockFormat { CC, CCBB, YYMMDDCCBB }
+    public long getTimeOfMidnight() {
+        return timeOfMidnight;
+    }
 
-    boolean isShortDate;
-    long y;
-    long m;
-    long d;
-    long c;
-    long b;
+    public long getTimeOfSunrise() {
+        return timeOfSunrise;
+    }
+
+    public long getTimeOfSunset() {
+        return timeOfSunset;
+    }
 
     public GeoDate(long timestamp, double latitude, double longitude, boolean computeOnlyShortDate) {
         isShortDate = computeOnlyShortDate;
@@ -131,6 +146,11 @@ public class GeoDate {
         long e = (10000 * (now - mid)) / (getMidnight(tom, lon) - mid);
         c = (e / 100) % 100;
         b = e % 100;
+
+        // TODO: Implement this
+        timeOfMidnight = mid;
+        timeOfSunrise = mid + 24598;
+        timeOfSunset = mid + 61767;
     }
 
     @Override
