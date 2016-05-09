@@ -66,7 +66,11 @@ public class MainActivity extends AppCompatActivity {
                             break;
                     }
 
-                    clockArc.addEvent(new DecoEvent.Builder(geoDate.getCentidays())
+                    float c = geoDate.getCentidays();
+                    float b = geoDate.getDimidays();
+                    float percent = c + b / 100.0f;
+
+                    clockArc.addEvent(new DecoEvent.Builder(percent)
                             .setIndex(clockArcIndex)
                             .setDuration(0)
                             .build());
