@@ -29,8 +29,11 @@ public class GeoDateWidgetTickReceiver extends BroadcastReceiver {
         String text;
         long nextTick;
         try {
-            double longitude = new GeoLocation(context).getLongitude();
-            GeoDate geoDate = new GeoDate(System.currentTimeMillis() / 1000, longitude, true);
+            long timestamp = System.currentTimeMillis() / 1000;
+            GeoLocation geoLocation = new GeoLocation(context);
+            double latitude = geoLocation.getLatitude();
+            double longitude = geoLocation.getLongitude();
+            GeoDate geoDate = new GeoDate(timestamp, latitude, longitude, true);
             text = geoDate.toString(GeoDate.ClockFormat.CC);
             nextTick = geoDate.nextTick();
         } catch (GeoLocation.LocationNotFoundException e) {

@@ -59,9 +59,10 @@ public class GeoDate {
     long c;
     long b;
 
-    public GeoDate(long timestamp, double longitude, boolean computeOnlyShortDate) {
+    public GeoDate(long timestamp, double latitude, double longitude, boolean computeOnlyShortDate) {
         isShortDate = computeOnlyShortDate;
 
+        double lat = latitude;
         double lon = longitude;
         long now = timestamp;
         long tom = now + 86400;

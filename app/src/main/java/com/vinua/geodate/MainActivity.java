@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView clockText;
     private DecoView clockArc;
     private int clockArcIndex;
+    private int clockArcSunriseIndex;
+    private int clockArcSunsetIndex;
     private GeoDate lastGeoDate;
     private GeoDate.ClockFormat clockFormat;
     SharedPreferences settings;
@@ -36,8 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 long timestamp = System.currentTimeMillis() / 1000;
-                double longitude = new GeoLocation(context).getLongitude();
-                GeoDate geoDate = new GeoDate(timestamp, longitude, false);
+                GeoLocation geoLocation = new GeoLocation(context);
+                double latitude = geoLocation.getLatitude();
+                double longitude = geoLocation.getLongitude();
+                GeoDate geoDate = new GeoDate(timestamp, latitude, longitude, false);
 
                 if (!geoDate.equals(lastGeoDate)) {
                     lastGeoDate = geoDate;
@@ -72,6 +76,23 @@ public class MainActivity extends AppCompatActivity {
 
                     clockArc.addEvent(new DecoEvent.Builder(percent)
                             .setIndex(clockArcIndex)
+                            .setDuration(0)
+                            .build());
+
+                    // TODO: Implement this
+                    // long timestamp_midnight = geoDate.getTimeOfMidnight();
+                    // long timestamp_sunrise = geoDate.getTimeOfSunrise();
+                    // long timestamp_sunset = geoDate.getTimeOfSunrise();
+                    float sunrise = 28.47f; // (timestamp_sunrise - timestamp_midnight) * 100.00f / 86400.00f;
+                    float sunset = 71.49f; // (timestamp_sunset - timestamp_midnight) * 100.00f / 86400.00f;
+
+                    clockArc.addEvent(new DecoEvent.Builder(sunrise)
+                            .setIndex(clockArcSunriseIndex)
+                            .setDuration(0)
+                            .build());
+
+                    clockArc.addEvent(new DecoEvent.Builder(100 - sunset)
+                            .setIndex(clockArcSunsetIndex)
                             .setDuration(0)
                             .build());
                 }
@@ -123,42 +144,45 @@ public class MainActivity extends AppCompatActivity {
         restoreClockFormat();
         clockArc.configureAngles(360, 180);
 
-        float fgLineWidth = 40f;
-        float bgLineWidth = 40f;
-        float sunrise = 28.47f;
-        float sunset = 71.49f;
+        float fgArcLineWidth = 40f;
+        float bgArcLineWidth = 40f;
+
+        SeriesItem seriesItem;
 
         // Background ark
-        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#E0E0E0")) // FIXME: Use colors.xml
-                .setCapRounded(false)
-                .setRange(0, 100, 100)
-                .setLineWidth(bgLineWidth)
-                .build());
+        clockArc.addSeries(
+                new SeriesItem.Builder(Color.parseColor("#E0E0E0"))
+                        .setCapRounded(false)
+                        .setRange(0, 100, 100)
+                        .setLineWidth(bgArcLineWidth)
+                        .build()
+        );
 
         // Clock ark
-        SeriesItem elapsedTime = new SeriesItem.Builder(Color.parseColor("#4DB6AC"))
+        seriesItem = new SeriesItem.Builder(Color.parseColor("#4DB6AC"))
                 .setCapRounded(false)
                 .addEdgeDetail(new EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, Color.parseColor("#11000000"), 0.2f))
                 .setRange(0, 100, 0)
-                .setLineWidth(fgLineWidth)
+                .setLineWidth(fgArcLineWidth)
                 .build();
-
-        clockArcIndex = clockArc.addSeries(elapsedTime);
+        clockArcIndex = clockArc.addSeries(seriesItem);
 
         // Darker background before sunrise
-        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#22000000")) // FIXME: Use colors.xml
+        seriesItem = new SeriesItem.Builder(Color.parseColor("#22000000")) // FIXME: Use colors.xml
                 .setCapRounded(false)
-                .setRange(0, 100, sunrise)
-                .setLineWidth(bgLineWidth)
-                .build());
+                .setRange(0, 100, 0)
+                .setLineWidth(bgArcLineWidth)
+                .build();
+        clockArcSunriseIndex = clockArc.addSeries(seriesItem);
 
         // Darker background after sunset
-        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#22000000")) // FIXME: Use colors.xml
+        seriesItem = new SeriesItem.Builder(Color.parseColor("#22000000")) // FIXME: Use colors.xml
                 .setSpinClockwise(false)
                 .setCapRounded(false)
-                .setRange(0, 100, 100 - sunset)
-                .setLineWidth(bgLineWidth)
-                .build());
+                .setRange(0, 100, 0)
+                .setLineWidth(bgArcLineWidth)
+                .build();
+        clockArcSunsetIndex = clockArc.addSeries(seriesItem);
 
         handler.post(textRunnable);
     }

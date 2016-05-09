@@ -13,6 +13,7 @@ public class GeoLocation {
     public class LocationNotFoundException extends Exception {
     }
 
+    private double latitude;
     private double longitude;
 
     public GeoLocation(Context context) throws LocationNotFoundException {
@@ -41,6 +42,7 @@ public class GeoLocation {
             throw new LocationNotFoundException();
         }
 
+        latitude = location.getLatitude();
         longitude = location.getLongitude();
         //Log.d("GeoDate",String.format("Location provider: '%s'", locationProvider));
         //Log.d("GeoDate", String.format("Got longitude '%f'", longitude));
@@ -49,5 +51,10 @@ public class GeoLocation {
     // NOTE: Can return null
     public double getLongitude() {
         return longitude;
+    }
+
+    // NOTE: Can return null
+    public double getLatitude() {
+        return latitude;
     }
 }
