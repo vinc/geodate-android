@@ -3,6 +3,7 @@ package com.vinua.geodate;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
@@ -118,20 +119,42 @@ public class MainActivity extends AppCompatActivity {
         restoreClockFormat();
         clockArc.configureAngles(360, 180);
 
-        // Create background track
+        float fgLineWidth = 40f;
+        float bgLineWidth = 40f;
+        float sunrise = 28.47f;
+        float sunset = 71.49f;
+
+        // Background ark
         clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#E0E0E0")) // FIXME: Use colors.xml
+                .setCapRounded(false)
                 .setRange(0, 100, 100)
-                .setLineWidth(40f)
+                .setLineWidth(bgLineWidth)
                 .build());
 
-        //Create data series track
+        // Clock ark
         SeriesItem elapsedTime = new SeriesItem.Builder(Color.parseColor("#4DB6AC"))
+                .setCapRounded(false)
                 .addEdgeDetail(new EdgeDetail(EdgeDetail.EdgeType.EDGE_INNER, Color.parseColor("#11000000"), 0.2f))
                 .setRange(0, 100, 0)
-                .setLineWidth(40f)
+                .setLineWidth(fgLineWidth)
                 .build();
 
         clockArcIndex = clockArc.addSeries(elapsedTime);
+
+        // Darker background before sunrise
+        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#22000000")) // FIXME: Use colors.xml
+                .setCapRounded(false)
+                .setRange(0, 100, sunrise)
+                .setLineWidth(bgLineWidth)
+                .build());
+
+        // Darker background after sunset
+        clockArc.addSeries(new SeriesItem.Builder(Color.parseColor("#22000000")) // FIXME: Use colors.xml
+                .setSpinClockwise(false)
+                .setCapRounded(false)
+                .setRange(0, 100, 100 - sunset)
+                .setLineWidth(bgLineWidth)
+                .build());
 
         handler.post(textRunnable);
     }
