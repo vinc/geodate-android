@@ -38,6 +38,8 @@ public class GeoDateWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+
+        super.onUpdate(context, appWidgetManager, appWidgetIds); // FIXME: Remove this
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
