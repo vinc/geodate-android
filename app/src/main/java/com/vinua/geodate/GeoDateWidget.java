@@ -1,11 +1,16 @@
 package com.vinua.geodate;
 
+import android.annotation.TargetApi;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.widget.RemoteViews;
 
 /**
@@ -33,6 +38,27 @@ public class GeoDateWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        // Get widget size
+        int minWidth = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+        int minHeight = newOptions.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+        int size = 48;
+        if (minHeight > 300 && minWidth > 300) {
+            size = 256;
+        } else if (minHeight > 200) {
+            size = 128;
+        } else if (minHeight > 100) {
+            size = 96;
+        }
+
+        // Change font size accordingly
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_geodate);
+        views.setTextViewTextSize(R.id.appwidget_text, TypedValue.COMPLEX_UNIT_SP, size);
+        appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
     @Override

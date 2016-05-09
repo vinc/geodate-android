@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
             long stop = System.currentTimeMillis();
             long elapsed = stop - start;
-            Log.d("GeoDate", String.format("Elapsed time: %d ms", elapsed));
+            //Log.d("GeoDate", String.format("Elapsed time: %d ms", elapsed));
             handler.postDelayed(textRunnable, 1000 - elapsed);
         }
     };

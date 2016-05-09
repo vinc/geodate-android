@@ -15,7 +15,7 @@
         android:contentDescription="@string/appwidget_text"
         android:fontFamily="sans-serif-light"
         android:text="@string/appwidget_text"
-        android:textColor="#ffffff"
+        android:textColor="#ccffffff"
         android:textSize="48sp"
         android:textStyle="" />
 
