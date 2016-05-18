@@ -149,8 +149,8 @@ public class GeoDate {
 
         // TODO: Implement this
         timeOfMidnight = mid;
-        timeOfSunrise = mid + 24598;
-        timeOfSunset = mid + 61767;
+        timeOfSunrise = mid + Math.round(86400 * 0.2900);
+        timeOfSunset = mid + Math.round(86400 * 0.7100);
     }
 
     @Override
